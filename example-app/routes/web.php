@@ -21,6 +21,8 @@ Route::get('/', function () {
 });
 Route::get('/categorie/show',[CategorieController::class,'show']);
 Route::get('/produits',[ProduitsController::class,'get']);
+Route::get('/Panier/{id}',[ProduitsController::class,'AjouterPanier']);
+Route::get('/Panier',[ProduitsController::class,'afficherPanier']);
 Route::get('/produits/show',[ProduitsController::class,'show']);
 Route::get('/produits/create',[ProduitsController::class,'getCategorie']);
 Route::post('/produit/create',[ProduitsController::class,'create']);

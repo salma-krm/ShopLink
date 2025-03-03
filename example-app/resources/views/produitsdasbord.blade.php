@@ -8,10 +8,10 @@
         :root {
             --sidebar-width: 250px;
             --header-height: 60px;
-            --primary-color: rgb(26, 126, 49);
-            --primary-dark: rgb(26, 126, 49);
+            --primary-color: #1a237e;
+            --primary-dark: #1a237e;
             --secondary-color: #f1f1f1;
-            --text-color: rgb(0, 0, 0);
+            --text-color: #343a40;
             --hover-color: #e0f7fa;
         }
 
@@ -46,15 +46,18 @@
             background-color: #e74c3c !important;
         }
 
+
+
         .dashboard {
             display: flex;
             min-height: 100vh;
         }
 
+        /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
             background: #fff;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.12);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
             position: fixed;
             height: 100vh;
             padding-top: 20px;
@@ -97,6 +100,7 @@
             margin-right: 10px;
         }
 
+        /* Search Input */
         .search-container {
             position: relative;
             width: 300px;
@@ -123,6 +127,7 @@
             color: #999;
         }
 
+        /* Main Content */
         .main-content {
             margin-left: var(--sidebar-width);
             padding: 20px;
@@ -140,6 +145,7 @@
             margin-bottom: 30px;
         }
 
+        /* Cards */
         .dashboard-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -170,6 +176,7 @@
             font-weight: bold;
         }
 
+        /* Table */
         table {
             width: 100%;
             background: white;
@@ -190,6 +197,7 @@
             text-align: center;
         }
 
+        /* Button */
         .btn {
             border-radius: 5px;
             padding: 8px 16px;
@@ -214,6 +222,7 @@
             background-color: #c82333;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
@@ -245,6 +254,7 @@
 
 <body>
     <div class="dashboard">
+        <!-- Sidebar Navigation -->
         <div class="sidebar">
             <div class="logo">Dashboard</div>
             <nav>
@@ -274,6 +284,7 @@
             </nav>
         </div>
 
+        <!-- Main Content Area -->
         <div class="main-content">
             <div class="header">
                 <h1>Tableau de bord</h1>
@@ -283,6 +294,7 @@
                 </div>
             </div>
 
+            <!-- Dashboard Cards -->
             <div class="dashboard-cards">
                 <div class="card">
                     <div class="card-title">produits Totales</div>
@@ -301,9 +313,8 @@
                     <div class="card-value">5</div>
                 </div>
             </div>
-
             <button class="btn btn-primary mb-3" type="button"><a href="/produits/create" style="color: white;">Ajouter Produits</a></button>
-
+            <!-- produits Table -->
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -327,112 +338,98 @@
                         <td>{{$produit->prix_unite}}</td>
                         <td>{{$produit->stock}}</td>
                         <td>{{$produit->souscategorie->title}}</td>
+
                         <td class="text-end">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal-{{$produit->id}}">
                                 Update
-                            </button>
+                            </a>
                             <form method="post" action="" class="d-inline">
                                 <button class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>
+
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
 
-        <!-- Update Modal -->
-        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <!-- Individual Update Modal for Each Product -->
+        @foreach($produits as $produit)
+        <div class="modal fade" id="updateModal-{{$produit->id}}" tabindex="-1" aria-labelledby="updateModalLabel-{{$produit->id}}" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: rgb(26, 126, 49); color: white;">
-                        <h5 class="modal-title" id="updateModalLabel">Modifier Produit</h5>
+                        <h5 class="modal-title" id="updateModalLabel-{{$produit->id}}">Modifier Produit: {{$produit->title}}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="updateProductForm" action="#" method="post" enctype="multipart/form-data">
-                            <input type="hidden" id="product_id" name="id">
+                        <form id="updateProductForm-{{$produit->id}}" action="/produits/update/{{$produit->id}}" method="post" enctype="multipart/form-data">
+                            @csrf
+
+
                             <div class="mb-3">
-                                <label for="title" class="form-label">Titre</label>
-                                <input type="text" class="form-control" id="title" name="title" required>
+                                <label for="title-{{$produit->id}}" class="form-label">Titre</label>
+                                <input type="text" class="form-control" id="title-{{$produit->id}}" name="title" value="{{$produit->title}}" required>
                             </div>
+
                             <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                <label for="description-{{$produit->id}}" class="form-label">Description</label>
+                                <textarea class="form-control" id="description-{{$produit->id}}" name="description" rows="3" required>{{$produit->description}}</textarea>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="prix_unite" class="form-label">Prix Unitaire</label>
+                                    <label for="prix_unite-{{$produit->id}}" class="form-label">Prix Unitaire</label>
                                     <div class="input-group">
                                         <span class="input-group-text">€</span>
-                                        <input type="number" class="form-control" id="prix_unite" name="prix_unite" step="0.01" min="0" required>
+                                        <input type="number" class="form-control" id="prix_unite-{{$produit->id}}" name="prix_unite" step="0.01" min="0" value="{{$produit->prix_unite}}" required>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6 mb-3">
-                                    <label for="stock" class="form-label">Stock</label>
-                                    <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+                                    <label for="stock-{{$produit->id}}" class="form-label">Stock</label>
+                                    <input type="number" class="form-control" id="stock-{{$produit->id}}" name="stock" min="0" value="{{$produit->stock}}" required>
                                 </div>
                             </div>
+
                             <div class="mb-3">
-                                <label for="souscategorie_id" class="form-label">Sous-Catégorie</label>
-                                <select class="form-select" id="souscategorie_id" name="souscategorie_id" required>
-                                    <option value="1">Électronique</option>
-                                    <option value="2">Vêtements</option>
-                                    <option value="3">Alimentation</option>
-                                    <option value="4">Maison</option>
+                                <label for="souscategorie_id-{{$produit->id}}" class="form-label">Sous-Catégorie</label>
+                                <select class="form-select" id="souscategorie_id-{{$produit->id}}" name="souscategorie_id" required>
+                                    @foreach($souscategories as $souscategorie)
+                                    <option value="{{$souscategorie->id}}" {{ $produit->souscategorie_id == $souscategorie->id ? 'selected' : '' }}>
+                                        {{$souscategorie->title}}
+                                    </option>
+                                    @endforeach
                                 </select>
                             </div>
+
                             <div class="mb-3">
-                                <label for="photo" class="form-label">Photo</label>
-                                <input type="file" class="form-control" id="photo" name="photo">
-                                <div class="form-text" id="current_photo"></div>
+                                <label for="photo-url-{{$produit->id}}" class="form-label">Photo URL</label>
+                                <input type="url" class="form-control" id="photo-url-{{$produit->id}}" name="photo_url" placeholder="Enter URL for the product photo" value="{{ $produit->photo ? asset('storage/'.$produit->photo) : '' }}">
                             </div>
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                <button type="submit" class="btn btn-primary" style="background-color: rgb(26, 126, 49);">Enregistrer</button>
-                            </div>
-                        </form>
+                            @if($produit->photo)
+                            <p>Photo actuelle: {{ $produit->photo }}</p>
+                            <img src="{{ asset('storage/'.$produit->photo) }}" alt="{{ $produit->title }}" class="img-thumbnail" style="max-height: 100px;">
+                            @endif
                     </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: rgb(26, 126, 49);">Enregistrer</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <!-- Add Bootstrap JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const updateButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
-                updateButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const row = this.closest('tr');
-                        const id = row.cells[0].textContent;
-                        const title = row.cells[1].textContent;
-                        const description = row.cells[2].textContent;
-                        const photo = row.cells[3].textContent;
-                        const prix_unite = row.cells[4].textContent;
-                        const stock = row.cells[5].textContent;
-                        const souscategorie = row.cells[6].textContent;
-
-                        document.getElementById('product_id').value = id;
-                        document.getElementById('title').value = title;
-                        document.getElementById('description').value = description;
-                        document.getElementById('prix_unite').value = prix_unite;
-                        document.getElementById('stock').value = stock;
-                        document.getElementById('current_photo').textContent = `Photo actuelle: ${photo}`;
-
-                        const select = document.getElementById('souscategorie_id');
-                        for (let i = 0; i < select.options.length; i++) {
-                            if (select.options[i].textContent === souscategorie) {
-                                select.selectedIndex = i;
-                                break;
-                            }
-                        }
-                    });
-                });
-            });
-        </script>
     </div>
+    @endforeach
+
+
+    </div>
+
+    <!-- Bootstrap JS (for Modal functionality) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
