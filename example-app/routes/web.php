@@ -26,4 +26,6 @@ Route::get('/Panier',[ProduitsController::class,'afficherPanier']);
 Route::get('/produits/show',[ProduitsController::class,'show']);
 Route::get('/produits/create',[ProduitsController::class,'getCategorie']);
 Route::post('/produit/create',[ProduitsController::class,'create']);
+Route::post('/produit/edit/{id}',[ProduitsController::class,'edit']);
+Route::post('/produit/{id}/delete',[ProduitsController::class,'delete']);
 

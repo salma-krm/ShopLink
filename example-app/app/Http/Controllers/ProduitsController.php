@@ -17,8 +17,7 @@ class ProduitsController extends Controller
         $souscategories = SousCategorie::get();
         return view('produitsdasbord', compact('produits', 'souscategories'));
     }
-    
-    
+
     public function getCategorie(){
         $souscategories = SousCategorie::get();
         return view('createproduit', compact('souscategories'));
@@ -39,9 +38,19 @@ public function create(Request $request){
        Produit::create($produit);
       return redirect('/produits/show');
 }
-public function update (){
-
+public function edit(request $request){
+    $produit = Produit::find($request['id']);
+    $produit->update($request->all());
+        return redirect('/produits/show');
 }
+public function delete(Request $request)
+{
+//    dd( $request);
+    $salle = Produit::find($request['id']);
+    Produit::where('id', $request['id'])->delete();
+    return redirect('/produits/show');
+}
+
 public function AjouterPanier($id)
 {
 

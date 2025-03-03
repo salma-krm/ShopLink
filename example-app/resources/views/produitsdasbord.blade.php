@@ -343,7 +343,9 @@
                             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal-{{$produit->id}}">
                                 Update
                             </a>
-                            <form method="post" action="" class="d-inline">
+                            <form method="post" action="/produit/{{$produit->id}}/delete" class="d-inline">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$produit->id}}">
                                 <button class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>
@@ -364,7 +366,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="updateProductForm-{{$produit->id}}" action="/produits/update/{{$produit->id}}" method="post" enctype="multipart/form-data">
+                        <form id="updateProductForm-{{$produit->id}}" action="/produit/edit/{{$produit->id}}" method="post" enctype="multipart/form-data">
                             @csrf
 
 
