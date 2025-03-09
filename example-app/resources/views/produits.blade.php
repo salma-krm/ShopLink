@@ -88,11 +88,32 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             border: none;
+            margin-top: 10px; /* Espacement entre les boutons */
         }
 
         .reservation-btn:hover {
             background: linear-gradient(45deg, #3949ab, #1a237e);
             color: white;
+        }
+
+        .detail-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 20px;
+            background: white;
+            color: #1a237e;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid #1a237e;
+        }
+
+        .detail-btn:hover {
+            background: #e8eaf6;
+            color: #1a237e;
         }
 
         .cart-btn {
@@ -110,6 +131,12 @@
 
         .cart-btn:hover {
             background-color: #3949ab;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         @media (max-width: 768px) {
@@ -142,19 +169,22 @@
                     <p class="room-description">{{$produit->description}}</p>
                     <div class="room-details">
                         <div class="detail-item">
-                            <span>prix: {{$produit->prix_unite}} </span>
+                            <h4>prix: {{$produit->prix_unite}} </h4>
                         </div>
-                        <div class="detail-item">
-                            <span>stock: {{$produit->stock}}</span>
-                        </div>
+                        
                     </div>
-                    <div>
-                        <h6>{{$produit->souscategorie->title}}</h6>
+                   
+                    <div class="button-group">
+                   
+                        <a href="/detailProduit/{{$produit->id}}" class="detail-btn">
+                            <i class="fas fa-search"></i> Voir détails
+                        </a>
+                        
+                        
+                        <a href="#" class="reservation-btn" data-bs-toggle="modal" data-bs-target="#reservationModal{{$produit->id}}" data-produits-id="{{$produit->id}}">
+                            <i class="fas fa-shopping-cart"></i> Ajouter au panier
+                        </a>
                     </div>
-                    <!-- Lien avec modal, ajout de l'ID du produit -->
-                    <a href="#" class="reservation-btn" data-bs-toggle="modal" data-bs-target="#reservationModal{{$produit->id}}" data-produits-id="{{$produit->id}}">
-                        Ajouter au panier
-                    </a>
                 </div>
             </div>
 

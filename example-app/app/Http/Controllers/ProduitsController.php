@@ -10,12 +10,23 @@ class ProduitsController extends Controller
 {
     public function get(){
         $produits = Produit::get();
-        return view('produits', compact('produits'));
+        return view('dashboard', compact('produits'));
     }
     public function show(){
         $produits = Produit::get();
         $souscategories = SousCategorie::get();
         return view('produitsdasbord', compact('produits', 'souscategories'));
+    }
+    public function All(){
+        $produits = Produit::get();
+        $souscategories = SousCategorie::get();
+        return view('welcome', compact('produits', 'souscategories'));
+    }
+
+    public function detail(Request $request, $id) {
+        $produit = Produit::find($id);
+
+        return view('detailProduit', compact('produit'));
     }
 
     public function getCategorie(){
@@ -51,9 +62,10 @@ public function delete(Request $request)
     return redirect('/produits/show');
 }
 
-public function AjouterPanier($id)
+public function AjouterPanier(Request $request)
 {
-
+    
+$id=$request['id'];
     $produit = Produit::find($id);
     
     if ($produit) {
@@ -63,7 +75,7 @@ public function AjouterPanier($id)
  
         if (isset($cart[$id])) {
          
-            $cart[$id]['quantity']++;
+            $cart[$id]['quantity']+=$request->get('quantity');
         } else {
            
             $cart[$id] = [
@@ -72,7 +84,7 @@ public function AjouterPanier($id)
                 'souscategorie_id' => $produit->souscategorie_id,
                 'description' => $produit->description,
                 'photo' => $produit->photo,
-                'quantity' => 1, 
+                'quantity' => $produit['quantity'] ?? 1 
             ];
         }
 
@@ -80,7 +92,7 @@ public function AjouterPanier($id)
         session()->put('cart', $cart);
 
         
-        return redirect('/produits');
+        return back();
     }
 }
 
@@ -92,6 +104,25 @@ public function afficherPanier()
 
     return view('panier', compact('panier'));
 }
+public function deletPanier($id)
+{
+    
+    $cart = session()->get('cart', []);
+
+    if (isset($cart[$id])) {
+       
+        unset($cart[$id]);
+
+        
+        session()->put('cart', $cart);
+
+        return redirect('/Panier')->with('success', 'Le produit a été supprimé du panier');
+    }
+
+
+    
+}
+
 
 
 

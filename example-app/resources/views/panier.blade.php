@@ -127,6 +127,15 @@
         .checkout-btn:hover {
             background: linear-gradient(45deg, #3949ab, #1a237e);
         }
+        
+        .item-total {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #1a237e;
+            font-weight: 600;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
     </style>
 </head>
 
@@ -142,7 +151,7 @@
                 <div class="cart-content">
                     <div class="cart-header">
                         <h2 class="cart-title">{{ $produit['title'] }}</h2>
-                        <button class="remove-btn" onclick="window.location.href='/Panier/Supprimer/{{ $id }}'">Supprimer</button>
+                        <button class="remove-btn" onclick="window.location.href='/panier/supprimer/{{ $id }}'">Supprimer</button>
                     </div>
                     <p class="cart-description">{{ $produit['description'] }}</p>
                     <div class="cart-price">
@@ -151,17 +160,29 @@
                     <div class="cart-quantity">
                         Quantité: {{ $produit['quantity'] }}
                     </div>
+                    <div class="item-total">
+                        Total: {{ number_format($produit['prix_unite'] * $produit['quantity'], 2, ',', ' ') }} €
+                    </div>
                 </div>
             </div>
             @endforeach
-
-
         </div>
 
-
         <div class="total-container">
-
-            <a href="/checkout" class="checkout-btn">Passer à la caisse</a>
+            <div class="total-price">
+                Total du panier: 
+                @php
+                    $total = 0;
+                    foreach($panier as $produit) {
+                        $total += $produit['prix_unite'] * $produit['quantity'];
+                    }
+                    echo number_format($total, 2, ',', ' ') . ' €';
+                @endphp
+            </div>
+            <div style="margin: 30px;">
+            <a href="/Commande" class="checkout-btn">Passer pour commande</a>
+            </div>
+           
         </div>
     </div>
 

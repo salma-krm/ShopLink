@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Produits</title>
+    <link rel="stylesheet" href="{{asset('css/produit.css')}}">
     <style>
         * {
             margin: 0;
@@ -39,7 +40,7 @@
             left: 0;
             width: 100%;
             height: 8px;
-            background: linear-gradient(90deg, #4a90e2 0%, #63b3ed 100%);
+            background: linear-gradient(90deg,rgb(46, 79, 117) 0%,rgb(39, 77, 104) 100%);
         }
 
         .form-header {
@@ -63,7 +64,7 @@
             transform: translateX(-50%);
             width: 60px;
             height: 4px;
-            background: #4a90e2;
+            background:rgb(30, 63, 99);
             border-radius: 2px;
         }
 
@@ -105,7 +106,7 @@
         input:focus,
         textarea:focus,
         select:focus {
-            border-color: #4a90e2;
+            border-color: rgb(30, 63, 99);
             outline: none;
             background: white;
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
@@ -131,7 +132,7 @@
         }
 
         .submit-btn {
-            background: linear-gradient(90deg, #4a90e2 0%, #63b3ed 100%);
+            background: linear-gradient(90deg, rgb(30, 63, 99), rgb(30, 63, 99)100%);
             color: white;
             padding: 16px;
             border: none;
@@ -146,7 +147,7 @@
         }
 
         .submit-btn:hover {
-            background: linear-gradient(90deg, #357abd 0%, #4a90e2 100%);
+            background: linear-gradient(90deg,rgb(13, 24, 35) 0%,rgb(20, 47, 79) 100%);
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
         }
