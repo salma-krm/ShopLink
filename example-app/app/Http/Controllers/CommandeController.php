@@ -13,10 +13,9 @@ class CommandeController extends Controller
         $pannier = session()->get('cart', []);
         return view('commande', compact('pannier'));
     }
-
+    
     public function create(Request $request)
     {
-    
         $address = Address::where('address', $request->address)->first();
         if (!$address) {
             $addressData = $request->validate([
@@ -60,9 +59,6 @@ class CommandeController extends Controller
                 'quantite' => $value["quantity"]
             ]);
         }
-        
-
-        session()->forget('cart');
         
         return redirect('/checkout');
     }
